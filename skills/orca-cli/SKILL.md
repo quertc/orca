@@ -31,10 +31,7 @@ inside Orca". Use plain shell tools when Orca state does not matter.
 Choose the executable once and reuse it for every later command:
 
 - If the `ORCA_CLI_COMMAND` environment variable is set, use its value. Orca exports this
-  when a managed session needs an explicit launcher override.
-- Otherwise, if `ORCA_REMOTE_CLI_BIN_DIR` is set, use the Orca relay launcher inside that
-  directory (`orca` on POSIX, `orca.exe` on Windows). Orca exports this for managed SSH
-  terminals; an unset `ORCA_CLI_COMMAND` does not make the terminal unmanaged.
+  for managed WSL sessions.
 - Otherwise, in a dev checkout whose session exposes `ORCA_DEV_REPO_ROOT`, use `orca-dev`.
 - Otherwise, on Linux outside an Orca-managed terminal, use `orca-ide`. Never run bare
   `orca` there — outside Orca's terminals it normally resolves to the

@@ -47,8 +47,9 @@ Do not use orchestration merely because the user says "hand off", "handoff", "ha
 ## Preconditions
 
 - `orca status --json` should show a running runtime.
-- Keep using the executable selected before loading this guide. Managed SSH terminals use
-  their relay launcher; only unmanaged Linux shells use `orca-ide`.
+- Keep using the executable selected before loading this guide. When the stub selected its
+  native POSIX SSH relay branch, replace every `orca` below with
+  `"$ORCA_REMOTE_CLI_BIN_DIR/orca"`; do not resolve it through `PATH`.
 - The orchestration experimental feature must be enabled in Settings > Experimental.
 - `orca orchestration` commands are RPC calls to the running Orca runtime.
 

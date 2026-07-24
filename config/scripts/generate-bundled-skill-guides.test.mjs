@@ -115,7 +115,6 @@ describe('bundled skill guide generator', () => {
       const source = await readFile(path.join(projectDir, 'skill-guides', `${name}.md`), 'utf8')
 
       expect(source).toContain('ORCA_CLI_COMMAND')
-      expect(source).toContain('ORCA_REMOTE_CLI_BIN_DIR')
       expect(source).toContain('orca-dev')
       expect(source).toContain('orca-ide')
       expect(source).toContain('PowerShell')
@@ -125,23 +124,6 @@ describe('bundled skill guide generator', () => {
       // the same guide unusable from PowerShell and cmd.exe.
       expect(source).not.toMatch(/^orca /mu)
       expect(source).not.toMatch(/\$ORCA(?:_|\b)/u)
-    }
-  })
-
-  it('resolves managed SSH launchers before dev and unmanaged Linux in every stub', async () => {
-    for (const name of STUB_TOPICS) {
-      const stub = await readFile(path.join(projectDir, 'skill-stubs', `${name}.md`), 'utf8')
-      const explicitOverride = stub.indexOf('ORCA_CLI_COMMAND')
-      const managedSsh = stub.indexOf('ORCA_REMOTE_CLI_BIN_DIR')
-      const devSession = stub.indexOf('ORCA_DEV_REPO_ROOT')
-      const unmanagedLinux = stub.indexOf('on Linux outside an Orca-managed terminal')
-
-      expect(explicitOverride, name).toBeGreaterThanOrEqual(0)
-      expect(managedSsh, name).toBeGreaterThan(explicitOverride)
-      expect(devSession, name).toBeGreaterThan(managedSsh)
-      expect(unmanagedLinux, name).toBeGreaterThan(devSession)
-      expect(stub, name).toContain('`orca` on POSIX, `orca.exe` on Windows')
-      expect(stub, name).not.toContain('$ORCA_REMOTE_CLI_BIN_DIR')
     }
   })
 

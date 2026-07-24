@@ -58,6 +58,16 @@ describe('orchestration skill guidance', () => {
     )
   })
 
+  it('keeps the executable selected by the install stub', () => {
+    const preconditions = getSection(readSkill(), 'Preconditions').replace(/\s+/gu, ' ')
+
+    expect(preconditions).toContain('Keep using the executable selected before loading this guide')
+    expect(preconditions).toContain('When the stub selected its native POSIX SSH relay branch')
+    expect(preconditions).toContain('"$ORCA_REMOTE_CLI_BIN_DIR/orca"')
+    expect(preconditions).toContain('do not resolve it through `PATH`')
+    expect(preconditions).not.toContain('`orca` must be on PATH')
+  })
+
   it('keeps full handoffs out of dispatch lifecycle and off the active branch base', () => {
     const skill = readSkill()
     const fullHandoffs = getSection(skill, 'Full Handoffs')
@@ -242,6 +252,11 @@ describe('orchestration skill guidance', () => {
 describe('orchestration install stub', () => {
   it('points at the version-matched guide and preserves the safe resolver', () => {
     const stub = readFileSync(stubPath, 'utf8')
+    const normalizedStub = stub.replace(/\s+/gu, ' ')
+    const explicitOverride = stub.indexOf('ORCA_CLI_COMMAND')
+    const managedPosixSsh = stub.indexOf('ORCA_REMOTE_CLI_BIN_DIR')
+    const devSession = stub.indexOf('ORCA_DEV_REPO_ROOT')
+    const unmanagedLinux = stub.indexOf('on Linux outside an Orca-managed terminal')
 
     expect(stub).toContain('discovery stub')
     expect(stub).toContain('ORCA skills get orchestration')
@@ -250,6 +265,16 @@ describe('orchestration install stub', () => {
     expect(stub).toContain('orca-dev')
     expect(stub).toContain('orca-ide')
     expect(stub).toContain('GNOME Orca screen reader')
+    expect(stub).toContain('native POSIX SSH host')
+    expect(stub).toContain('"$ORCA_REMOTE_CLI_BIN_DIR/orca"')
+    expect(stub).toContain('Do not resolve `orca` through `PATH`')
+    expect(normalizedStub).toContain('report its exact error and stop')
+    expect(normalizedStub).toContain('Do not fall through to another executable')
+    expect(managedPosixSsh).toBeGreaterThan(explicitOverride)
+    expect(devSession).toBeGreaterThan(managedPosixSsh)
+    expect(unmanagedLinux).toBeGreaterThan(devSession)
+    expect(stub).not.toContain('orca.exe')
+    expect(stub).not.toContain('orca.cmd')
     expect(stub).not.toMatch(/^orca /mu)
   })
 

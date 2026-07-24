@@ -34,10 +34,11 @@ state; never substitute a non-Orca subagent tool.
 Choose the executable once and reuse it for every later command:
 
 - If the `ORCA_CLI_COMMAND` environment variable is set, use its value. Orca exports this
-  when a managed session needs an explicit launcher override.
-- Otherwise, if `ORCA_REMOTE_CLI_BIN_DIR` is set, use the Orca relay launcher inside that
-  directory (`orca` on POSIX, `orca.exe` on Windows). Orca exports this for managed SSH
-  terminals; an unset `ORCA_CLI_COMMAND` does not make the terminal unmanaged.
+  for managed WSL sessions.
+- Otherwise, on a native POSIX SSH host with a non-empty `ORCA_REMOTE_CLI_BIN_DIR`, use
+  `"$ORCA_REMOTE_CLI_BIN_DIR/orca"` exactly. Do not resolve `orca` through `PATH`. Orca
+  exports this directory for its managed relay; an unset `ORCA_CLI_COMMAND` does not make
+  the terminal unmanaged.
 - Otherwise, in a dev checkout whose session exposes `ORCA_DEV_REPO_ROOT`, use `orca-dev`.
 - Otherwise, on Linux outside an Orca-managed terminal, use `orca-ide`. Never run bare
   `orca` there — outside Orca's terminals it normally resolves to the
@@ -45,8 +46,9 @@ Choose the executable once and reuse it for every later command:
 - Otherwise, use `orca`.
 
 Below, `ORCA` is a placeholder for the executable you resolved. Substitute it before
-running anything; do not create a shell variable or run `ORCA` literally. This works the
-same way in POSIX shells, PowerShell, and cmd.exe.
+running anything; do not create a shell variable or run `ORCA` literally. For the POSIX
+relay case, substitute the quoted command shown above. For every other branch, this works
+the same way in POSIX shells, PowerShell, and cmd.exe.
 
 If the selected executable cannot run, report its exact error and stop. Do not fall through
 to another executable, which could silently target a different Orca build.

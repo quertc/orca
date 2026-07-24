@@ -26,11 +26,9 @@ streaming server.
 ## CLI executable
 
 Choose the Orca executable once: use the `ORCA_CLI_COMMAND` environment value when set;
-otherwise use the relay launcher inside `ORCA_REMOTE_CLI_BIN_DIR` in a managed SSH
-terminal (`orca` on POSIX, `orca.exe` on Windows), `orca-dev` in a dev session exposing
-`ORCA_DEV_REPO_ROOT`, `orca-ide` on Linux outside an Orca-managed terminal, and `orca`
-everywhere else. Never try bare `orca` first on unmanaged Linux because it normally
-resolves to the GNOME screen reader.
+otherwise use `orca-dev` in a dev session exposing `ORCA_DEV_REPO_ROOT`, `orca-ide` on
+Linux outside an Orca-managed terminal, and `orca` everywhere else. Never try bare
+`orca` first on unmanaged Linux because it normally resolves to the GNOME screen reader.
 
 In every command example — fenced blocks, tables, and prose — `ORCA` is a documentation
 placeholder. Replace it with the chosen executable before running the command; do not
