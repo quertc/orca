@@ -17,7 +17,7 @@ description: >-
 
 `linear-tickets` is the legacy bundled name for `orca-linear`. This copy remains complete; its CLI commands are identical to `orca-linear` and always use `orca linear ...`.
 
-Use `orca linear` when Linear is the source of task context or ticket updates. On Linux, use `orca-ide` wherever this file says `orca`.
+Use `orca linear` when Linear is the source of task context or ticket updates. Managed SSH terminals use their relay launcher; only unmanaged Linux shells use `orca-ide` wherever this file says `orca`.
 
 `orca-linear` and `linear-tickets` are skill names, not CLI namespaces. Always run `orca linear ...` commands.
 
