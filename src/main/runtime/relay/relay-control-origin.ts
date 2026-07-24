@@ -31,7 +31,6 @@ export class RelayControlOrigin {
   readonly assignment: RelayAssignment
   readonly transport: CloudRelayTransport
   private readonly options: RelayControlOriginOptions
-  private readonly detachTransport: () => void
   private readonly controls = new Set<RelayControlClient>()
   private readonly retiredControlTimers = new Map<
     RelayControlClient,
@@ -54,7 +53,7 @@ export class RelayControlOrigin {
       createSocket: options.createDataSocket,
       onConnectionClosed: (connectionId) => options.onConnectionReleased(connectionId, this)
     })
-    this.detachTransport = options.mobileSocketWiring.attachTransport(this.transport, (ws) =>
+    options.mobileSocketWiring.attachTransport(this.transport, (ws) =>
       this.transport.metadataFor(ws)
     )
   }
@@ -144,7 +143,6 @@ export class RelayControlOrigin {
       return
     }
     this.closed = true
-    this.detachTransport()
     for (const timer of this.retiredControlTimers.values()) {
       clearTimeout(timer)
     }

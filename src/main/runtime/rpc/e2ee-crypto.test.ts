@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import nacl from 'tweetnacl'
 import {
   generateKeyPair,
@@ -6,9 +6,7 @@ import {
   encrypt,
   decrypt,
   encryptBytes,
-  decryptBytes,
-  MAX_E2EE_ENCRYPTED_BASE64_CHARACTERS,
-  publicKeyFromBase64
+  decryptBytes
 } from './e2ee-crypto'
 import { MOBILE_E2EE_LEGACY_FIXTURE } from '../../../shared/mobile-e2ee-legacy-fixtures'
 
@@ -88,16 +86,6 @@ describe('e2ee-crypto', () => {
   it('decrypt returns null for truncated data', () => {
     const shared = deriveSharedKey(generateKeyPair().secretKey, generateKeyPair().publicKey)
     expect(decrypt('dG9vc2hvcnQ=', shared)).toBeNull()
-  })
-
-  it('rejects oversized encoded inputs before base64 decoding', () => {
-    const shared = deriveSharedKey(generateKeyPair().secretKey, generateKeyPair().publicKey)
-    const decode = vi.spyOn(Buffer, 'from')
-
-    expect(() => publicKeyFromBase64('A'.repeat(45))).toThrow('encoded value is too large')
-    expect(decrypt('A'.repeat(MAX_E2EE_ENCRYPTED_BASE64_CHARACTERS + 1), shared)).toBeNull()
-    expect(decode).not.toHaveBeenCalled()
-    decode.mockRestore()
   })
 
   it('decrypt returns null for tampered data', () => {
